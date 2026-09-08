@@ -1,10 +1,15 @@
 from django.shortcuts import render
+from .models import Product
+
+# def home(request):
+#     """Контроллер для отображения домашней страницы (каталог)."""
+#     return render(request, "catalog/home.html")
 
 
 def home(request):
-    """Контроллер для отображения домашней страницы (каталог)."""
-    return render(request, "catalog/home.html")
-
+    latest_products = Product.objects.order_by('-created_at')[:5]
+    print(latest_products)  # вывод в консоль сервера
+    return render(request, 'catalog/home.html', {'products': latest_products})
 
 def contacts(request):
     """Контроллер для отображения страницы контактов и обработки формы."""
@@ -22,3 +27,7 @@ def contacts(request):
         print("--------------------------------")
         success = True
     return render(request, "catalog/contacts.html", {"success": success})
+
+# def contacts(request):
+#     contacts_list = Contact.objects.all()
+#     return render(request, 'catalog/contacts.html', {'contacts': contacts_list})
