@@ -6,7 +6,7 @@
 
 
 ## Установка
-1. Клонируйте репозиторий: `git clone <url>`
+1. Клонируйте репозиторий: `git clone https://github.com/sidvla8-wq/home_django
 2. Создайте виртуальное окружение: `python -m venv venv`
 3. Активируйте окружение:
    - Windows: `venv\Scripts\activate`
