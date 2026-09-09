@@ -48,3 +48,15 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'home_django',
+        'USER': 'django_user',
+        'PASSWORD': 'django123',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
