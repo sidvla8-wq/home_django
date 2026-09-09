@@ -22,6 +22,7 @@
 - `main` — стабильные релизы
 - `develop` — ветка разработки
 - `feature/django` — ветки для отдельных задач
+- 'psycopg2-binary'
 
 ## Задание 23 Работа с ORM в Django
 
