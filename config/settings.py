@@ -1,9 +1,14 @@
-import os
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# SECRET_KEY = os.getenv('SECRET_KEY')
+# DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 SECRET_KEY = "django-insecure-x9z8q7w6e5r4t3y2u1i8o9p0a1s2d3f4g5h6j7k8l9"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
@@ -53,10 +58,10 @@ MIDDLEWARE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'home_django',
-        'USER': 'django_user',
-        'PASSWORD': 'django123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }

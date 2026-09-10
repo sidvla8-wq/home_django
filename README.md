@@ -23,6 +23,7 @@
 - `develop` — ветка разработки
 - `feature/django` — ветки для отдельных задач
 - 'psycopg2-binary'
+- 'python-dotenv'
 
 ## Задание 23 Работа с ORM в Django
 
