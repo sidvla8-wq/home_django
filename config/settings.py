@@ -2,8 +2,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# SECRET_KEY = os.getenv('SECRET_KEY')
-# DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 SECRET_KEY = "django-insecure-x9z8q7w6e5r4t3y2u1i8o9p0a1s2d3f4g5h6j7k8l9"
 
