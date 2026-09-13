@@ -6,7 +6,7 @@
 
 
 ## Установка
-1. Клонируйте репозиторий: `git clone <url>`
+1. Клонируйте репозиторий: `git clone https://github.com/sidvla8-wq/home_django
 2. Создайте виртуальное окружение: `python -m venv venv`
 3. Активируйте окружение:
    - Windows: `venv\Scripts\activate`
@@ -22,3 +22,9 @@
 - `main` — стабильные релизы
 - `develop` — ветка разработки
 - `feature/django` — ветки для отдельных задач
+- 'psycopg2-binary'
+- 'python-dotenv'
+
+## Задание 23 Работа с ORM в Django
+
+Выполнено согласно условию
