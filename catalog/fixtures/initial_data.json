@@ -1,0 +1,38 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Электроника",
+      "description": "Гаджеты и устройства"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Одежда",
+      "description": "Повседневная и спортивная одежда"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Смартфон X",
+      "description": "Флагманский смартфон",
+      "price": 599.99,
+      "category": 1
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Футболка базовая",
+      "description": "Хлопковая футболка",
+      "price": 29.99,
+      "category": 2
+    }
+  }
+]
