@@ -37,6 +37,9 @@
   {% endif %}
 
   <button type="submit">Сохранить</button>
+  {% if object.pk %}
+  <a href="{% url 'product_delete' object.pk %}">Удалить</a>
+  {% endif %}
   <a href="{% url 'home' %}">Отмена</a>
 </form>
 {% endblock %}': form})

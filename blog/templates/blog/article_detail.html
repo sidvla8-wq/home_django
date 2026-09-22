@@ -1,0 +1,34 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<article>
+  <h1>{{ article.title }}</h1>
+
+  <p class="meta">
+    Опубликовано: {{ article.created_at|date:"d.m.Y H:i" }}
+    · Просмотров: {{ article.views_count }}
+    {% if not article.is_published %}<span class="badge">Черновик</span>{% endif %}
+  </p>
+
+  {% if article.preview %}
+    <img src="{{ article.preview.url }}" alt="{{ article.title }}" class="full-img">
+  {% endif %}
+
+  <div class="content-body">
+    {{ article.content|linebreaks }}
+  </div>
+
+  <hr>
+
+  {% if user.is_staff %}
+    <div class="admin-actions">
+      <a href="{% url 'blog:article_update' article.pk %}" class="btn btn-sm">Редактировать</a>
+      <a href="{% url 'blog:article_delete' article.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+    </div>
+  {% endif %}
+
+  <p><a href="{% url 'blog:article_list' %}">← Вернуться к списку</a></p>
+</article>
+{% endblock %}
