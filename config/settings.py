@@ -3,6 +3,11 @@ import os
 from dotenv import load_dotenv
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 SECRET_KEY = "django-insecure-x9z8q7w6e5r4t3y2u1i8o9p0a1s2d3f4g5h6j7k8l9"
 
 BASE_DIR = Path(__file__).resolve().parent.parent

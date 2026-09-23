@@ -1,45 +1,25 @@
-{% extends 'catalog/base.html' %}
+{% extends "catalog/base.html" %}
 
-{% block title %}Добавить товар{% endblock %}
+{% block title %}{{ action }} продукт{% endblock %}
 
 {% block content %}
-<h1>Добавить новый товар</h1>
-
-<form method="post">
+<h1>{{ action }} продукт</h1>
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
-
-  <div class="form-group">
-    <label>{{ form.name.label_tag }}</label>
-    {{ form.name }}
-  </div>
-
-  <div class="form-group">
-    <label>{{ form.description.label_tag }}</label>
-    {{ form.description }}
-  </div>
-
-  <div class="form-group">
-    <label>{{ form.price.label_tag }}</label>
-    {{ form.price }}
-  </div>
-
-  <div class="form-group">
-    <label>{{ form.category.label_tag }}</label>
-    {{ form.category }}
-  </div>
-
-  {% if form.errors %}
-  <div class="errors">
-    {% for field in form %}
-    {{ field.errors }}
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  <button type="submit">Сохранить</button>
-  {% if object.pk %}
-  <a href="{% url 'product_delete' object.pk %}">Удалить</a>
-  {% endif %}
-  <a href="{% url 'home' %}">Отмена</a>
+  {{ form.non_field_errors }}
+  {% for field in form %}
+    <div class="mb-3">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.errors %}
+        <div class="text-danger">{{ field.errors }}</div>
+      {% endif %}
+      {% if field.help_text %}
+        <small class="text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-success">Сохранить</button>
+  <a href="{% url 'product_list' %}" class="btn">Отмена</a>
 </form>
-{% endblock %}': form})
+{% endblock %}

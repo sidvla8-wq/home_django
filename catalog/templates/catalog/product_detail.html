@@ -1,17 +1,17 @@
-{% extends 'catalog/base.html' %}
+{% extends "catalog/base.html" %}
 
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-<article class="product-detail">
-  <h1>{{ product.name }}</h1>
+<h1>{{ product.name }}</h1>
+{% if product.image %}
+  <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
+{% endif %}
+<p><strong>Цена:</strong> {{ product.price }} ₽</p>
+<p><strong>Описание:</strong></p>
+<p>{{ product.description|linebreaks }}</p>
 
-  <p><strong>Категория:</strong> {{ product.category.name }}</p>
-  <p><strong>Цена:</strong> {{ product.price }} ₽</p>
-
-  <h3>Описание</h3>
-  <p>{{ product.description }}</p>
-
-  <a href="{% url 'home' %}">← Вернуться в каталог</a>
-</article>
+<a href="{% url 'product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
+<a href="{% url 'product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+<a href="{% url 'product_list' %}" class="btn">Назад к списку</a>
 {% endblock %}
