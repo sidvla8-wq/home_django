@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{% if object.pk %}Редактирование{% else %}Новая статья{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{% if object.pk %}Редактировать статью{% else %}Написать статью{% endif %}</h1>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <label for="{{ form.title.id_for_label }}">Заголовок</label>
+    {{ form.title }}
+    {{ form.title.errors }}
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.content.id_for_label }}">Содержимое</label>
+    {{ form.content }}
+    {{ form.content.errors }}
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.preview.id_for_label }}">Превью (картинка)</label>
+    {{ form.preview }}
+    {% if form.preview.value %}
+      <img src="{{ form.preview.value.url }}" width="150" style="margin-top: 5px;">
+    {% endif %}
+    {{ form.preview.errors }}
+  </div>
+
+  <div class="form-group">
+    <label>Опубликовано</label>
+    {{ form.is_published }}
+    {{ form.is_published.errors }}
+  </div>
+
+  <button type="submit" class="btn">Сохранить</button>
+  <a href="{% url 'blog:article_list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
