@@ -6,15 +6,13 @@
 <article>
   <h1>{{ article.title }}</h1>
 
-  <p class="meta">
-    Опубликовано: {{ article.created_at|date:"d.m.Y H:i" }}
-    · Просмотров: {{ article.views_count }}
-    {% if not article.is_published %}<span class="badge">Черновик</span>{% endif %}
-  </p>
-
   {% if article.preview %}
     <img src="{{ article.preview.url }}" alt="{{ article.title }}" class="full-img">
   {% endif %}
+
+  <p class="meta">
+    {{ article.created_at|date:"d.m.Y H:i" }} · Просмотров: {{ article.views_count }}
+  </p>
 
   <div class="content-body">
     {{ article.content|linebreaks }}
@@ -22,9 +20,10 @@
 
   <hr>
 
-  {% if user.is_staff %}
+  {# Кнопки управления — только для контент-менеджера #}
+  {% if user.is_authenticated and user.groups.all.0.name == 'Контент-менеджер' or user.is_superuser %}
     <div class="admin-actions">
-      <a href="{% url 'blog:article_update' article.pk %}" class="btn btn-sm">Редактировать</a>
+      <a href="{% url 'blog:article_update' article.pk %}" class="btn btn-sm btn-secondary">Редактировать</a>
       <a href="{% url 'blog:article_delete' article.pk %}" class="btn btn-sm btn-danger">Удалить</a>
     </div>
   {% endif %}

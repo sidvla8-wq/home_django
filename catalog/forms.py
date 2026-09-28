@@ -66,3 +66,12 @@ class ProductForm(forms.ModelForm):
             raise ValidationError("Разрешены только файлы JPEG и PNG.")
 
         return image
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'image', 'is_published']
+        widgets = {
+            # ... оставляем как было ...
+            'is_published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
