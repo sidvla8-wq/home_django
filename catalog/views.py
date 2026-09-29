@@ -80,40 +80,65 @@ class ProductDetailView(DetailView):
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
-    """Создание товара — автоматически привязывает владельца"""
     model = Product
-    form_class = ProductForm
+    fields = ['name', 'description', 'price', 'image', 'category', 'is_published']
     template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('home')
+    success_url = '/products/'
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
+        form.instance.owner = self.request.user  # Присваиваем владельца
+        response = super().form_valid(form)
+
+        # Сброс КЭШа при создании
+        cache.delete('all_published_products')
+        if form.instance.category:
+            cache.delete(f'products_by_category_{form.instance.category_id}')
+
+        return response
 
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    """Редактирование — только владелец"""
     model = Product
-    form_class = ProductForm
+    fields = ['name', 'description', 'price', 'image', 'category', 'is_published']
     template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('home')
+    success_url = '/products/'  # или свой URL
 
     def test_func(self):
+        # Разрешаем редактировать только владельцу или суперпользователю
         product = self.get_object()
-        return product.owner == self.request.user
+        return self.request.user == product.owner or self.request.user.is_superuser
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        # 1. Сбрасываем кеш главной страницы (список всех товаров)
+        cache.delete('all_published_products')
+
+        # 2. Сбрасываем кеш категории, если она изменилась
+        if self.object.category:
+            cache.delete(f'products_by_category_{self.object.category_id}')
+
+        return response
 
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    """Удаление — владелец ИЛИ модератор"""
     model = Product
+    success_url = reverse_lazy('home')  # или свой URL
     template_name = 'catalog/product_confirm_delete.html'
-    success_url = reverse_lazy('home')
 
     def test_func(self):
         product = self.get_object()
-        is_owner = product.owner == self.request.user
-        is_moderator = self.request.user.has_perm('catalog.delete_product')
-        return is_owner or is_moderator
+        return self.request.user == product.owner or self.request.user.is_superuser
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()  # Сохраняем объект ДО удаления
+
+        # Сброс КЭШа перед удалением
+        cache.delete('all_published_products')
+        if obj.category:
+            cache.delete(f'products_by_category_{obj.category_id}')
+
+        return super().delete(request, *args, **kwargs)
 
 
 class ProductUnpublishView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -134,3 +159,35 @@ class ProductUnpublishView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class ContactView(TemplateView):
     template_name = 'catalog/contacts.html'
+
+# Задание 29
+from django.shortcuts import get_object_or_404
+from .models import Category
+from .services import get_cached_products_by_category
+from .services import get_cached_products
+
+class HomeView(ListView):
+    """Главная — список товаров (открыто всем, с кешированием)"""
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'page_obj'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return get_cached_products()
+
+class ProductsByCategoryView(ListView):
+    """Список продуктов в указанной категории (с кешированием)"""
+    template_name = 'catalog/products_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('pk')
+        # Используем сервисную функцию с низкоуровневым кешированием (Задание 4)
+        return get_cached_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('pk')
+        context['category'] = get_object_or_404(Category, pk=category_id)
+        return context

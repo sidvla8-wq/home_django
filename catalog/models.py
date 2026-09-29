@@ -69,6 +69,16 @@ class Product(models.Model):
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
 
+    class Product(models.Model):
+            category = models.ForeignKey(
+            Category,
+            on_delete=models.SET_NULL,
+            null=True,
+            blank=True,
+            related_name='products',
+            verbose_name='Категория'
+        )
+
 class Contact(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя')
     email = models.EmailField(verbose_name='Email')

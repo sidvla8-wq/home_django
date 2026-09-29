@@ -18,4 +18,6 @@ urlpatterns = [
     path('product/<int:pk>/delete/', views.ProductDeleteView.as_view(), name='product_delete'),
     path('product/<int:pk>/unpublish/', views.ProductUnpublishView.as_view(), name='product_unpublish'),
     path('contacts/', views.ContactView.as_view(), name='contacts'),
+    # Новый марщрут
+    path('category/<int:pk>/', views.ProductsByCategoryView.as_view(), name='products_by_category'),
 ]
