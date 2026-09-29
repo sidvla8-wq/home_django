@@ -1,0 +1,30 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Блог{% endblock %}
+
+{% block content %}
+<h1>Блог</h1>
+
+{# Кнопка создания — только для контент-менеджера #}
+{% if user.is_authenticated and user.groups.all.0.name == 'Контент-менеджер' or user.is_superuser %}
+  <a href="{% url 'blog:article_create' %}" class="btn btn-primary">Написать статью</a>
+  <hr>
+{% endif %}
+
+<div class="articles-grid">
+  {% for article in articles %}
+    <article class="card">
+      {% if article.preview %}
+        <img src="{{ article.preview.url }}" alt="{{ article.title }}" class="preview-img">
+      {% endif %}
+      <h2><a href="{% url 'blog:article_detail' article.pk %}">{{ article.title }}</a></h2>
+      <p class="meta">
+        {{ article.created_at|date:"d.m.Y" }} · Просмотров: {{ article.views_count }}
+      </p>
+      <p>{{ article.content|truncatechars:120 }}</p>
+    </article>
+  {% empty %}
+    <p>Пока нет опубликованных статей.</p>
+  {% endfor %}
+</div>
+{% endblock %}

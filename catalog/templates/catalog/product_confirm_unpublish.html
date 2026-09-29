@@ -1,0 +1,13 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Снятие с публикации{% endblock %}
+
+{% block content %}
+<h1>Снять продукт с публикации?</h1>
+<p>Продукт «{{ object.name }}» будет скрыт из общего списка.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-warning">Да, снять с публикации</button>
+  <a href="{% url 'product_detail' object.pk %}" class="btn">Отмена</a>
+</form>
+{% endblock %}

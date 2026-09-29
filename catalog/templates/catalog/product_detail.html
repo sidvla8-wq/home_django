@@ -1,0 +1,45 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<article>
+  <h1>{{ product.name }}</h1>
+
+  {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
+  {% endif %}
+
+  <p><strong>Цена:</strong> {{ product.price }} ₽</p>
+  <p><strong>Описание:</strong></p>
+  <p>{{ product.description|linebreaks }}</p>
+
+  <p><strong>Статус:</strong>
+    {% if product.is_published %}
+      Опубликован
+    {% else %}
+      Черновик
+    {% endif %}
+  </p>
+
+  <hr>
+
+  {# Кнопка редактирования — только для владельца #}
+  {% if user.is_authenticated and product.owner == user %}
+    <a href="{% url 'product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
+    <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+  {% endif %}
+
+  {# Кнопка удаления — для модератора (если он не владелец) #}
+  {% if user.is_authenticated and perms.catalog.delete_product and product.owner != user %}
+    <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger">Удалить (модератор)</a>
+  {% endif %}
+
+  {# Кнопка отмены публикации — только для модератора #}
+  {% if user.is_authenticated and perms.catalog.can_unpublish_product and product.is_published %}
+    <a href="{% url 'product_unpublish' product.pk %}" class="btn btn-warning">Снять с публикации</a>
+  {% endif %}
+
+  <a href="{% url 'home' %}" class="btn">Назад к списку</a>
+</article>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Каталог{% endblock %}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+    .footer { border-top: 2px solid #333; padding-top: 10px; margin-top: 40px; text-align: center; color: #666; }
+    .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .product-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
+    .product-card h2 { margin-bottom: 10px; }
+    .product-card h2 a { text-decoration: none; color: #0066cc; }
+    .product-description { color: #555; margin-bottom: 10px; }
+    .product-price { font-weight: bold; font-size: 1.2em; }
+    .nav-menu { display: flex; gap: 15px; list-style: none; }
+    .nav-menu a { text-decoration: none; color: #333; }
+    .nav-menu a:hover { color: #0066cc; }
+    .pagination { margin-top: 30px; display: flex; gap: 15px; align-items: center; }
+    .pagination a { text-decoration: none; padding: 5px 15px; border: 1px solid #ddd; border-radius: 4px; }
+    .pagination a:hover { background: #f5f5f5; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    {% include 'catalog/includes/menu.html' %}
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Каталог товаров. Учебный проект.</p>
+  </footer>
+</body>
+</html>
