@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ message.subject }}{% endblock %}
+
+{% block content %}
+<h1>{{ message.subject }}</h1>
+
+<table class="table">
+  <tr><th>Тема:</th><td>{{ message.subject }}</td></tr>
+  <tr><th>Тело письма:</th><td>{{ message.body|linebreaks }}</td></tr>
+</table>
+
+{% if message.owner == user %}
+  <a href="{% url 'mailings:message_update' message.pk %}" class="btn btn-secondary">Редактировать</a>
+  <a href="{% url 'mailings:message_delete' message.pk %}" class="btn btn-danger">Удалить</a>
+{% endif %}
+<a href="{% url 'mailings:message_list' %}" class="btn btn-link">Назад к списку</a>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Рассылка #{{ mailing.pk }}{% endblock %}
+
+{% block content %}
+<h1>Рассылка #{{ mailing.pk }}</h1>
+
+<table class="table">
+  <tr><th>Начало:</th><td>{{ mailing.start_time|date:"d.m.Y H:i" }}</td></tr>
+  <tr><th>Окончание:</th><td>{{ mailing.end_time|date:"d.m.Y H:i" }}</td></tr>
+  <tr><th>Статус:</th><td>{{ mailing.status }}</td></tr>
+  <tr><th>Активна:</th><td>{% if mailing.is_active %}да{% else %}нет{% endif %}</td></tr>
+  <tr><th>Сообщение:</th><td>{{ mailing.message.subject|default:"—" }}</td></tr>
+  <tr><th>Получатели:</th>
+    <td>
+      {% for r in mailing.recipients.all %}
+        {{ r.full_name }} ({{ r.email }}){% if not forloop.last %}, {% endif %}
+      {% empty %}Нет получателей.{% endfor %}
+    </td>
+  </tr>
+</table>
+
+<a href="{% url 'mailings:mailing_send' mailing.pk %}" class="btn btn-success">Запустить отправку</a>
+{% if mailing.owner == user %}
+  <a href="{% url 'mailings:mailing_update' mailing.pk %}" class="btn btn-secondary">Редактировать</a>
+  <a href="{% url 'mailings:mailing_delete' mailing.pk %}" class="btn btn-danger">Удалить</a>
+{% endif %}
+<a href="{% url 'mailings:mailing_list' %}" class="btn btn-link">Назад</a>
+
+<hr>
+<h3>Последние попытки отправки</h3>
+<table class="table table-sm">
+  <thead>
+    <tr><th>Время</th><th>Статус</th><th>Ответ сервера</th></tr>
+  </thead>
+  <tbody>
+    {% for a in attempts %}
+    <tr>
+      <td>{{ a.attempt_time|date:"d.m.Y H:i" }}</td>
+      <td>{% if a.status == 'Успешно' %}✅{% else %}❌{% endif %} {{ a.status }}</td>
+      <td>{{ a.server_response|truncatechars:80 }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Попыток пока не было.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
