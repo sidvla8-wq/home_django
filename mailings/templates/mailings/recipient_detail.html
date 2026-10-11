@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ recipient.full_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ recipient.full_name }}</h1>
+
+<table class="table">
+  <tr><th>Email:</th><td>{{ recipient.email }}</td></tr>
+  <tr><th>Комментарий:</th><td>{{ recipient.comment|default:"—" }}</td></tr>
+</table>
+
+{% if recipient.owner == user %}
+  <a href="{% url 'mailings:recipient_update' recipient.pk %}" class="btn btn-secondary">Редактировать</a>
+  <a href="{% url 'mailings:recipient_delete' recipient.pk %}" class="btn btn-danger">Удалить</a>
+{% endif %}
+<a href="{% url 'mailings:recipient_list' %}" class="btn btn-link">Назад к списку</a>
+{% endblock %}

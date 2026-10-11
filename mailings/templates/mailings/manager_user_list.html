@@ -1,0 +1,25 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Пользователи сервиса{% endblock %}
+
+{% block content %}
+<h1>Пользователи сервиса</h1>
+<table class="table table-striped">
+  <thead>
+    <tr><th>Email</th><th>Активен</th><th>Действие</th></tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.email }}</td>
+      <td>{% if u.is_active %}✅{% else %}❌{% endif %}</td>
+      <td>
+        <a href="{% url 'mailings:user_block' u.pk %}" class="btn btn-sm btn-warning">
+          {% if u.is_active %}Заблокировать{% else %}Разблокировать{% endif %}
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

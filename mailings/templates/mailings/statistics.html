@@ -1,0 +1,34 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<h1>Статистика по рассылкам</h1>
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5>Всего отправлено</h5>
+        <p class="display-6">{{ total_sent }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5>Успешно</h5>
+        <p class="display-6 text-success">{{ success }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5>Неуспешно</h5>
+        <p class="display-6 text-danger">{{ fail }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

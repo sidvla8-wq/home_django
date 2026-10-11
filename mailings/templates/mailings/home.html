@@ -1,0 +1,46 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Главная — Сервис рассылок{% endblock %}
+
+{% block content %}
+<h1>Сервис рассылок сообщений</h1>
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Всего рассылок</h5>
+        <p class="display-4">{{ total_mailings }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Активных рассылок</h5>
+        <p class="display-4 text-success">{{ active_mailings }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Уникальных получателей</h5>
+        <p class="display-4">{{ unique_recipients }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="d-flex gap-3 flex-wrap">
+  <a href="{% url 'mailings:mailing_list' %}" class="btn btn-primary">Рассылки</a>
+  <a href="{% url 'mailings:recipient_list' %}" class="btn btn-secondary">Получатели</a>
+  <a href="{% url 'mailings:message_list' %}" class="btn btn-secondary">Сообщения</a>
+  <a href="{% url 'mailings:statistics' %}" class="btn btn-info">Статистика</a>
+  {% if user.is_authenticated and user.groups.all.0.name == 'Менеджер' or user.is_superuser %}
+    <a href="{% url 'mailings:manager_user_list' %}" class="btn btn-warning">Пользователи</a>
+  {% endif %}
+</div>
+{% endblock %}
